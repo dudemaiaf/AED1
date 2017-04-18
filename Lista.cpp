@@ -1,20 +1,46 @@
-#include "Lista.h"
+#include <iostream>
+#include "Lista.hpp"
 
-Chave Questao::getID(){
-	return ID;
+void Lista::insere(int numero) {
+	if(n < TAM){
+		n ++;
+		vetor[n] = numero;
+	}else{
+		cout << "\nLista cheia!" << endl;
+	}
 }
-void Questao::setID(Chave chave){
-	this->ID = chave;
+
+void Lista::mostra() {
+	if(n > 0){
+		for(int i = 1; i <= n; i ++){
+			cout << vetor[i] << " ";
+		}
+	}else{
+		cout << "\nLista vazia!" << endl;
+	}
 }
-void Questao::setEnunciado(Enunciado enunciado){
-	this->enunciado = enunciado;
+
+int* Lista::busca(int Chave) {
+	vetor[0] = Chave;
+	int i = n;
+	while(Chave != vetor[i]) {
+		i --;
+	}
+	if(i > 0){
+		return &vetor[i];
+	}else{
+		return NULL;
+	}
 }
-void Questao::setPopularidade(Popularidade popularidade){
-	this->popularidade = popularidade;
-}
-void Questao::setDificuldade(Dificuldade dificuldade){
-	this->dificuldade = dificuldade;
-}
-void Questao::imprimir(){
-	cout << ID << " - " << enunciado << " - " << popularidade << " - " << dificuldade << endl;
+
+void Lista::remove(int posicao, int &memoria) {
+	if(posicao <= n && posicao > 0){
+		memoria = vetor[posicao];
+		for(int i = posicao; i < n; i ++){
+			vetor[i] = vetor[i + 1];
+		}
+		n --;
+	}else{
+		cout << "\nLista vazia ou posicao invalida" << endl;
+	}
 }
