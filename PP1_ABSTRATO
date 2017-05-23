@@ -1,0 +1,94 @@
+#include <iostream>
+
+using namespace std;
+
+class LE {
+private:
+	string *comando;
+	int T;
+	int N;
+public:
+	LE(int TAM) {
+		comando = new string[TAM+1];
+		T = TAM+1;
+		N = 0;
+	}
+
+	void Insere(string Chave){
+		if(N >= T){
+			cout << "Lista cheia" << endl;
+		}else{
+			N ++;
+			comando[N] = Chave;
+		}
+	}
+
+	string Busca(string Chave) {
+		comando[0] = Chave;
+		int i = N;
+		while(Chave != comando[i]){
+			i --;
+		}if(i > 0){
+			return comando[i];
+		}else{
+			return "null";
+		}
+	}
+	void Mostra(){
+		for(int i = 1; i < T; i ++){
+			cout << comando[i] + " ";
+		}
+	}
+};
+
+class Pilha{
+private:
+	int topo;
+	int fundo;
+	int max;
+	string *retorno;
+public:
+	Pilha(int T) {
+		max = T+1;
+		retorno = new string[max];
+		fundo = 0;
+		topo = fundo;
+	}
+	int getTopo() {
+		return topo;
+	}
+	int getFundo() {
+		return fundo;
+	}
+	void empilha(string Chave) {
+		if(topo == max){
+			cout << "Pilha cheia\n";
+		}else{
+			topo ++;
+			retorno[topo] = Chave;
+		}
+	}
+	void desempilha(string &Chave) {
+		if(topo == fundo){
+			cout << "Pilha vazia!\n";
+		}else{
+			Chave = retorno[topo];
+			topo --;
+		}
+	}
+	void mostrar() {
+		if(topo == fundo){
+			cout << "Pilha vazia!\n";
+		}else{
+			for(int i = topo; i > 0; i--){
+				cout << retorno[i] << endl;
+			}
+		}
+	}
+};
+
+int main(){
+
+
+	return 0;
+}
