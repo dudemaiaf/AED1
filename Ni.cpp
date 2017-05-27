@@ -1,13 +1,42 @@
+#include <iostream>
+#define TAM 1000
+using namespace std;
+
 class LE{
 private:
   string *vetor;
   int tamanho;
   int ultimo;
 public:
+  LE() {
+    this->tamanho = TAM;
+    vetor = new string[this->tamanho];
+    ultimo = 0;
+  }
+
   LE(int tamanho) {
     this->tamanho = tamanho+1;
     vetor = new string[this->tamanho];
     ultimo = 0;
+  }
+
+  void setTamanho(int tamanho) {
+    this->tamanho = tamanho;
+  }
+
+  void setUltimo(int ultimo) {
+    this->ultimo = ultimo;
+  }
+
+  int getTamanho() {
+    return tamanho;
+  }
+
+  int getUltimo() {
+    return ultimo;
+  }
+  string getELemento(int i){
+    return vetor[i];
   }
 
   void insere(string Chave) {
@@ -21,7 +50,7 @@ public:
 
   void mostra() {
     for(int i = 0; i <= ultimo; i++) {
-      cout << vetor[i] << " ";
+      cout << vetor[i] << "\n";
     }
     cout << endl;
   }
@@ -87,17 +116,53 @@ public:
 			cout << nav->getString() << endl;
 		}
 	}
+  bool vazia() {
+    return topo == fundo;
+  }
 };
 
-class Ni{
-private:
-  LE entradaPrograma;
-  Pilha pilhaExecucao;
-public:
+// class Ni{
+// private:
+//   LE entradaPrograma;
+//   Pilha pilhaExecucao;
+// public:
+//   Ni(LE entradaPrograma, Pilha pilhaExecucao) {
+//     this->entradaPrograma = entradaPrograma;
+//     this->pilhaExecucao = pilhaExecucao;
+//   }
+// };
 
-};
+void preencherEntradaPrograma(LE &entradaPrograma) {
+  string entrada;
+  while(getline(cin, entrada)){
+    if(entrada == "~"){
+      break;
+    }
+    entradaPrograma.insere(entrada);
+  }
+}
 
 int main() {
+  LE entradaPrograma(TAM);
+  Pilha pilhaExecucao;
+  preencherEntradaPrograma(entradaPrograma);
+  //entradaPrograma.mostra();
+  int ultimo = entradaPrograma.getUltimo();
+  while(entradaPrograma.getELemento(ultimo) != "Z :"){
+    pilhaExecucao.empilhar(entradaPrograma.getELemento(ultimo));
+    ultimo --;
+  }
 
+  while(!pilhaExecucao.vazia()){
+    string funcao;
+    pilhaExecucao.desempilhar(funcao);
+    if(funcao.size() == 11) {
+      cout << funcao[10] << " ";
+    }if(funcao.size() == 12) {
+      cout << funcao[10] << funcao[11] << " ";
+    }if(funcao.size() == 5) {
+
+    }
+  }
   return 0;
 }
