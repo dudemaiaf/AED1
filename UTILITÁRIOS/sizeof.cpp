@@ -3,8 +3,8 @@
 using namespace std;
 
 int main() {
-  string nome = "Mateus";
-  cout << nome.size() << endl;
+  string nome = "A";
+  cout << nome + " :" << endl;
   return 0;
 
 }

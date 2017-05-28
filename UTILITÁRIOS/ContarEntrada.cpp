@@ -36,11 +36,7 @@ Z :
     print 0
     print 1
     print 2
-    print 3
-    print 12
-    print 13
-    print 11
-    print 14
-    print 15
+    A
+    B
 ~
 */

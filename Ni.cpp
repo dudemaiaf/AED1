@@ -137,8 +137,9 @@ void preencherEntradaPrograma(LE &entradaPrograma) {
   while(getline(cin, entrada)){
     if(entrada == "~"){
       break;
+    }else{
+      entradaPrograma.insere(entrada);
     }
-    entradaPrograma.insere(entrada);
   }
 }
 
@@ -146,7 +147,6 @@ int main() {
   LE entradaPrograma(TAM);
   Pilha pilhaExecucao;
   preencherEntradaPrograma(entradaPrograma);
-  //entradaPrograma.mostra();
   int ultimo = entradaPrograma.getUltimo();
   while(entradaPrograma.getELemento(ultimo) != "Z :"){
     pilhaExecucao.empilhar(entradaPrograma.getELemento(ultimo));
@@ -154,14 +154,32 @@ int main() {
   }
 
   while(!pilhaExecucao.vazia()){
+
     string funcao;
     pilhaExecucao.desempilhar(funcao);
     if(funcao.size() == 11) {
       cout << funcao[10] << " ";
     }if(funcao.size() == 12) {
       cout << funcao[10] << funcao[11] << " ";
-    }if(funcao.size() == 5) {
-
+    }
+    if(funcao.size() == 5) {
+      int comeco, fim;
+      for(int i = 0; i < entradaPrograma.getUltimo(); i ++){
+        if(entradaPrograma.getELemento(i)[0] == funcao[4]){
+          comeco = i+1;
+          break;
+        }
+      }
+      for(int i = comeco+1; i < entradaPrograma.getUltimo(); i ++){
+        if(entradaPrograma.getELemento(i).size() != 11 && entradaPrograma.getELemento(i).size() != 12 && entradaPrograma.getELemento(i).size() != 5){
+          fim = i;
+          break;
+        }
+      }
+      while(fim > comeco){
+        fim--;
+        pilhaExecucao.empilhar(entradaPrograma.getELemento(fim));
+      }
     }
   }
   return 0;
