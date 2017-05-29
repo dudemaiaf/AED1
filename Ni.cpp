@@ -112,9 +112,11 @@ public:
 		delete aux;
 	}
 	void mostrar() {
+    cout << "---" << endl;
 		for(No *nav = topo->getNo(); nav != NULL; nav = nav->getNo()){
 			cout << nav->getString() << endl;
 		}
+    cout << "---" << endl;
 	}
   bool vazia() {
     return topo == fundo;
@@ -147,14 +149,22 @@ int main() {
   LE entradaPrograma(TAM);
   Pilha pilhaExecucao;
   preencherEntradaPrograma(entradaPrograma);
-  int ultimo = entradaPrograma.getUltimo();
+  int flag = 0;
+  int ultimo;
+  for(int i = 0; i < entradaPrograma.getTamanho(); i ++){
+    if(entradaPrograma.getELemento(i) == "Z :"){
+      flag ++;
+    }if(flag == 1 && entradaPrograma.getELemento(i).size() == 0){
+      ultimo = i - 1;
+      break;
+    }
+  }
   while(entradaPrograma.getELemento(ultimo) != "Z :"){
     pilhaExecucao.empilhar(entradaPrograma.getELemento(ultimo));
     ultimo --;
   }
-
+  
   while(!pilhaExecucao.vazia()){
-
     string funcao;
     pilhaExecucao.desempilhar(funcao);
     if(funcao.size() == 11) {
@@ -164,19 +174,17 @@ int main() {
     }
     if(funcao.size() == 5) {
       int comeco, fim;
-      for(int i = 0; i < entradaPrograma.getUltimo(); i ++){
+      int flag = 0;
+      for(int i = 0; i <= entradaPrograma.getUltimo(); i ++){
         if(entradaPrograma.getELemento(i)[0] == funcao[4]){
           comeco = i+1;
-          break;
-        }
-      }
-      for(int i = comeco+1; i < entradaPrograma.getUltimo(); i ++){
-        if(entradaPrograma.getELemento(i).size() != 11 && entradaPrograma.getELemento(i).size() != 12 && entradaPrograma.getELemento(i).size() != 5){
+          flag ++;
+        }if(flag == 1 && entradaPrograma.getELemento(i).size() == 0){
           fim = i;
           break;
         }
       }
-      while(fim > comeco){
+      while(fim >= comeco){
         fim--;
         pilhaExecucao.empilhar(entradaPrograma.getELemento(fim));
       }
