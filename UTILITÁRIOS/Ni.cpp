@@ -123,16 +123,19 @@ public:
   }
 };
 
-// class Ni{
-// private:
-//   LE entradaPrograma;
-//   Pilha pilhaExecucao;
-// public:
-//   Ni(LE entradaPrograma, Pilha pilhaExecucao) {
-//     this->entradaPrograma = entradaPrograma;
-//     this->pilhaExecucao = pilhaExecucao;
-//   }
-// };
+class Ni{
+private:
+  LE entradaPrograma;
+  Pilha pilhaExecucao;
+public:
+  Ni(LE entradaPrograma, Pilha pilhaExecucao) {
+    this->entradaPrograma = entradaPrograma;
+    this->pilhaExecucao = pilhaExecucao;
+  }
+  LE getEntradaPrograma() {
+    return entradaPrograma;
+  }
+};
 
 void preencherEntradaPrograma(LE &entradaPrograma) {
   string entrada;
@@ -146,6 +149,11 @@ void preencherEntradaPrograma(LE &entradaPrograma) {
 }
 
 int main() {
+  // LE entradaPrograma(TAM);
+  // Pilha pilhaExecucao;
+  // preencherEntradaPrograma(entradaPrograma);
+  // Ni LinguaguemNi(entradaPrograma, pilhaExecucao);
+  // LinguaguemNi.getEntradaPrograma().mostra();
   LE entradaPrograma(TAM);
   Pilha pilhaExecucao;
   preencherEntradaPrograma(entradaPrograma);
@@ -163,7 +171,7 @@ int main() {
     pilhaExecucao.empilhar(entradaPrograma.getELemento(ultimo));
     ultimo --;
   }
-  
+
   while(!pilhaExecucao.vazia()){
     string funcao;
     pilhaExecucao.desempilhar(funcao);

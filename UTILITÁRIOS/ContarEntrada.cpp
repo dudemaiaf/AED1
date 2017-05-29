@@ -6,17 +6,11 @@ int main() {
   int contador = 0;
   string entrada;
   string vetor[Limite];
-  while(getline(cin, entrada)){
-    if(entrada == "~"){
-      break;
-    }
-    vetor[contador] = entrada;
+  do{
+    getline(cin, entrada);
     contador ++;
-  }
+  }while(entrada != "~");
   cout << contador << endl;
-  for(int i = 0; i < contador+1; i ++){
-    cout << vetor[i] << "_";
-  }
   return 0;
 }
 
@@ -38,5 +32,6 @@ Z :
     print 2
     A
     B
+
 ~
 */
