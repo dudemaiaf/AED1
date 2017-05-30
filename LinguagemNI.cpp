@@ -160,7 +160,7 @@ public:
     for(int i = 0; i < entradaPrograma.getTamanho(); i ++){
       if(entradaPrograma.getELemento(i) == "Z :"){
         flag ++;
-      }if(flag == 1 && entradaPrograma.getELemento(i).size() == 0){
+      }if(flag == 1 && entradaPrograma.getELemento(i) == "~"){
         ultimo = i--;
         break;
       }
