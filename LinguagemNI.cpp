@@ -170,31 +170,31 @@ public:
       pilhaExecucao.empilhar(entradaPrograma.getELemento(ultimo));
       ultimo --;
     }
-    pilhaExecucao.mostrar();
-    // while(!pilhaExecucao.vazia()){
-    //   string funcao;
-    //   pilhaExecucao.desempilhar(funcao);
-    //   if(funcao.size() == 11) {
-    //     cout << funcao[10] << " ";
-    //   }if(funcao.size() == 12) {
-    //     cout << funcao[10] << funcao[11] << " ";
-    //   }if(funcao.size() == 5) {
-    //     int comeco, fim, flag = 0;
-    //     for(int i = 1; i <= entradaPrograma.getUltimo(); i ++){
-    //       if(entradaPrograma.getELemento(i)[0] == funcao[4]){
-    //         comeco = i+1;
-    //         flag ++;
-    //       }if(flag == 1 && entradaPrograma.getELemento(i).size() == "~"){
-    //         fim = i;
-    //         break;
-    //       }
-    //     }
-    //     while(fim >= comeco){
-    //       fim--;
-    //       pilhaExecucao.empilhar(entradaPrograma.getELemento(fim));
-    //     }
-    //   }
-    // }
+    while(!pilhaExecucao.vazia()){
+      string funcao;
+      pilhaExecucao.desempilhar(funcao);
+      if(funcao.size() == 11) {
+        cout << funcao[10] << " ";
+      }if(funcao.size() == 12) {
+        cout << funcao[10] << funcao[11] << " ";
+      }
+      if(funcao.size() == 5) {
+        int comeco, fim, flag = 0;
+        for(int i = 1; i <= entradaPrograma.getUltimo(); i ++){
+          if(entradaPrograma.getELemento(i)[0] == funcao[4]){
+            comeco = i+1;
+            flag ++;
+          }if((flag == 1) && ((entradaPrograma.getELemento(i).size() == 3 && entradaPrograma.getELemento(i)[0] != funcao[4]) || (entradaPrograma.getELemento(i) == "~"))){
+            fim = i;
+            break;
+          }
+        }
+        while(fim >= comeco){
+          fim--;
+          pilhaExecucao.empilhar(entradaPrograma.getELemento(fim));
+        }
+      }
+    }
   }
 };
 
