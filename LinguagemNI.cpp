@@ -151,7 +151,6 @@ public:
         }
       }
     }
-    entradaPrograma.mostrar();
   }
 
   void interpretarEntrada() {
