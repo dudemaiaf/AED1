@@ -1,5 +1,9 @@
 #include <iostream>
+#include <cstdlib>
+
+#define MAX 10000
 #define TAM 1000
+
 using namespace std;
 
 class LE{
@@ -90,30 +94,38 @@ public:
   }
 };
 
-class Pilha{
+class Pilha {
 private:
-	No *fundo, *topo;
+	int topo, fundo;
+	string *funcoes;
 public:
 	Pilha() {
-		fundo = new No();
-		fundo->setNo(NULL);
+		fundo = 0;
 		topo = fundo;
+		funcoes = new string[MAX];
 	}
-	void empilhar(string Func) {
-		No *aux = new No();
-		topo->setString(Func);
-		aux->setNo(topo);
-		topo = aux;
+
+	void empilhar(string funcao) {
+		if(topo == MAX) {
+			cout << "\nPilha cheia\n";
+		}else{
+			topo ++;
+			funcoes[topo] = funcao;
+		}
 	}
-	void desempilhar(string &Func) {
-		No *aux = topo;
-		topo = topo->getNo();
-		Func = topo->getString();
-		delete aux;
+	void desempilhar(string &funcao) {
+		if(topo == fundo) {
+			cout << "\nPilha vazia\n";
+		}else{
+      funcao = funcoes[topo];
+			topo --;
+		}
 	}
 	void mostrar() {
-		for(No *nav = topo->getNo(); nav != NULL; nav = nav->getNo()){
-			cout << nav->getString() << endl;
+		int fim = topo;
+		while(fim > fundo) {
+			cout << funcoes[fim] << endl;
+			fim --;
 		}
 	}
   bool vazia() {
