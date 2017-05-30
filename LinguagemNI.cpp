@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <stdlib.h>
+
 
 #define TAM 1000
 
@@ -129,10 +129,12 @@ class Ni{
 private:
   LE entradaPrograma;
   Pilha pilhaExecucao;
+  string resultado;
 public:
   Ni(LE entradaPrograma, Pilha pilhaExecucao) {
     this->entradaPrograma = entradaPrograma;
     this->pilhaExecucao = pilhaExecucao;
+    resultado = "";
   }
 
   LE getEntradaPrograma() {
@@ -173,9 +175,11 @@ public:
       string funcao;
       pilhaExecucao.desempilhar(funcao);
       if(funcao.size() == 11) {
-        cout << funcao[10] << " ";
+        resultado = resultado + funcao[10] + " ";
+        //cout << funcao[10] << " ";
       }if(funcao.size() == 12) {
-        cout << funcao[10] << funcao[11] << " ";
+        resultado = resultado + funcao[10] + funcao[11] + " ";
+        //cout << funcao[10] << funcao[11] << " ";
       }
       if(funcao.size() == 5) {
         int comeco, fim, flag = 0;
@@ -195,6 +199,9 @@ public:
       }
     }
   }
+  void imprimirResultado() {
+    cout << resultado << endl;
+  }
 };
 
 int main() {
@@ -203,4 +210,6 @@ int main() {
   Ni linguagemNi(entradaPrograma, pilhaExecucao);
   linguagemNi.preencherEntradaPrograma();
   linguagemNi.interpretarEntrada();
+  linguagemNi.imprimirResultado();
+  return 0;
 }
