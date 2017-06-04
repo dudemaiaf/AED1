@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdlib>
 
-
 #define TAM 1000
 
 using namespace std;
@@ -9,46 +8,34 @@ using namespace std;
 template <class T>
 class LE{
 private:
-  T *vetor;
-  int tamanho;
-  int ultimo;
+  T *array;
+  int limite;
+  int ultimaPosicao;
 public:
   LE() {
-    this->tamanho = TAM;
-    vetor = new T[this->tamanho];
-    ultimo = 0;
+    this->limite = TAM;
+    array = new T[this->limite];
+    ultimaPosicao = 0;
   }
 
-  LE(int tamanho) {
-    this->tamanho = tamanho+1;
-    vetor = new T[this->tamanho];
-    ultimo = 0;
+  LE(int limite) {
+    this->limite = limite+1;
+    array = new T[this->limite];
+    ultimaPosicao = 0;
   }
-
-  void setTamanho(int tamanho) {
-    this->tamanho = tamanho;
+  int getLimite() {
+    return limite;
   }
-
-  void setUltimo(int ultimo) {
-    this->ultimo = ultimo;
+  int getUltimaPosicao() {
+    return ultimaPosicao;
   }
-
-  int getTamanho() {
-    return tamanho;
+  T getELemento(int posicaoEscolhida){
+    return array[posicaoEscolhida];
   }
-
-  int getUltimo() {
-    return ultimo;
-  }
-
-  T getELemento(int i){
-    return vetor[i];
-  }
-
   void inserir(T Chave) {
-    if(ultimo < tamanho){
-      ultimo ++;
-      vetor[ultimo] = Chave;
+    if(ultimaPosicao < limite){
+      ultimaPosicao ++;
+      array[ultimaPosicao] = Chave;
     }else{
       cout << "\nLista cheia! \n";
     }
@@ -114,13 +101,13 @@ private:
   LE <T> entradaPrograma;
   Pilha pilhaExecucao;
   string resultado;
-  bool verificarPrint(string funcao) {
-    return funcao[4] == 'P' && funcao[5] == 'R' && funcao[6] == 'I' && funcao[7] == 'N' && funcao[8] == 'T';
+  bool verificarPrint(string linhaExecucao) {
+    return linhaExecucao[4] == 'P' && linhaExecucao[5] == 'R' && linhaExecucao[6] == 'I' && linhaExecucao[7] == 'N' && linhaExecucao[8] == 'T';
   }
-  bool verificarChamadaFuncao(string funcao) {
-    return funcao[4] == 'A' || funcao[4] == 'B' || funcao[4] == 'C' || funcao[4] == 'D' || funcao[4] == 'E' || funcao[4] == 'F' || funcao[4] == 'G' || funcao[4] == 'H' || funcao[4] == 'I' || funcao[4] == 'J'
-           || funcao[4] == 'K' || funcao[4] == 'L' || funcao[4] == 'M' || funcao[4] == 'N' || funcao[4] == 'O' || funcao[4] == 'P' || funcao[4] == 'Q' || funcao[4] == 'R' || funcao[4] == 'S' || funcao[4] == 'T'
-           || funcao[4] == 'U' || funcao[4] == 'V' || funcao[4] == 'X' || funcao[4] == 'W' || funcao[4] == 'Y' || funcao[4] == 'Z';
+  bool verificarChamadaFuncao(string linhaExecucao) {
+    return linhaExecucao[4] == 'A' || linhaExecucao[4] == 'B' || linhaExecucao[4] == 'C' || linhaExecucao[4] == 'D' || linhaExecucao[4] == 'E' || linhaExecucao[4] == 'F' || linhaExecucao[4] == 'G' || linhaExecucao[4] == 'H' || linhaExecucao[4] == 'I' || linhaExecucao[4] == 'J'
+           || linhaExecucao[4] == 'K' || linhaExecucao[4] == 'L' || linhaExecucao[4] == 'M' || linhaExecucao[4] == 'N' || linhaExecucao[4] == 'O' || linhaExecucao[4] == 'P' || linhaExecucao[4] == 'Q' || linhaExecucao[4] == 'R' || linhaExecucao[4] == 'S' || linhaExecucao[4] == 'T'
+           || linhaExecucao[4] == 'U' || linhaExecucao[4] == 'V' || linhaExecucao[4] == 'X' || linhaExecucao[4] == 'W' || linhaExecucao[4] == 'Y' || linhaExecucao[4] == 'Z';
   }
 public:
   Ni(LE <T> entradaPrograma, Pilha pilhaExecucao) {
@@ -134,67 +121,67 @@ public:
   }
 
   void preencherEntradaPrograma() {
-    string entrada;
-    while(getline(cin, entrada)){
-      if(entrada == "~"){
-        entradaPrograma.inserir("~");
+    string linhaLida;
+    while(getline(cin, linhaLida)){
+      if(linhaLida == "~"){
+        entradaPrograma.inserir(linhaLida);
         break;
       }else{
-        if(entrada.size() != 0){
-          entradaPrograma.inserir(entrada);
+        if(linhaLida.size() != 0){
+          entradaPrograma.inserir(linhaLida);
         }
       }
     }
   }
 
-  void interpretarEntrada() {
+  void empilharMain() {
     int flag = 0;
-    int ultimo;
-    for(int i = 0; i < entradaPrograma.getTamanho(); i ++){
+    int ultimaLinhaMain;
+    for(int i = 1; i <= entradaPrograma.getUltimaPosicao(); i ++){
       if(entradaPrograma.getELemento(i) == "Z :"){
         flag ++;
       }if((flag == 1) && ((entradaPrograma.getELemento(i).size() == 3 && entradaPrograma.getELemento(i) != "Z :") || entradaPrograma.getELemento(i) == "~")){
         i --;
-        ultimo = i;
+        ultimaLinhaMain = i;
         break;
       }
     }
 
-    while(entradaPrograma.getELemento(ultimo) != "Z :"){
-      pilhaExecucao.empilhar(entradaPrograma.getELemento(ultimo));
-      ultimo --;
+    while(entradaPrograma.getELemento(ultimaLinhaMain) != "Z :"){
+      pilhaExecucao.empilhar(entradaPrograma.getELemento(ultimaLinhaMain));
+      ultimaLinhaMain --;
     }
 
     while(!pilhaExecucao.vazia()){
-      string funcao;
-      pilhaExecucao.desempilhar(funcao);
-      if(verificarPrint(funcao)) {
-        if(funcao.size() == 11){
-          resultado = resultado + funcao[10] + ' ';
-        }if(funcao.size() == 12){
-          resultado = resultado + funcao[10] + funcao[11] + ' ';
+      string linhaExecucao;
+      pilhaExecucao.desempilhar(linhaExecucao);
+      if(verificarPrint(linhaExecucao)) {
+        if(linhaExecucao.size() == 11){
+          resultado = resultado + linhaExecucao[10] + ' ';
+        }if(linhaExecucao.size() == 12){
+          resultado = resultado + linhaExecucao[10] + linhaExecucao[11] + ' ';
         }
       }
-      if(verificarChamadaFuncao(funcao) && funcao.size() == 5) {
-        int comeco, fim, flag = 0;
-        for(int i = 1; i <= entradaPrograma.getUltimo(); i ++){
-          if(entradaPrograma.getELemento(i)[0] == funcao[4]){
-            comeco = i+1;
+      if(verificarChamadaFuncao(linhaExecucao) && linhaExecucao.size() == 5) {
+        int comecoFuncao, fimFuncao, flag = 0;
+        for(int i = 1; i <= entradaPrograma.getUltimaPosicao(); i ++){
+          if(entradaPrograma.getELemento(i)[0] == linhaExecucao[4]){
+            comecoFuncao = i+1;
             flag ++;
-          }if((flag == 1) && ((entradaPrograma.getELemento(i).size() == 3 && entradaPrograma.getELemento(i)[0] != funcao[4]) || (entradaPrograma.getELemento(i) == "~"))){
-            fim = i;
+          }if((flag == 1) && ((entradaPrograma.getELemento(i).size() == 3 && entradaPrograma.getELemento(i)[0] != linhaExecucao[4]) || (entradaPrograma.getELemento(i) == "~"))){
+            fimFuncao = i;
             break;
           }
         }
-        while(fim >= comeco){
-          fim--;
-          pilhaExecucao.empilhar(entradaPrograma.getELemento(fim));
+        while(fimFuncao >= comecoFuncao){
+          fimFuncao --;
+          pilhaExecucao.empilhar(entradaPrograma.getELemento(fimFuncao));
         }
       }
     }
   }
   void imprimirResultado() {
-    cout << resultado << endl;
+    cout << resultado;
   }
 };
 
@@ -203,7 +190,7 @@ int main() {
   Pilha pilhaExecucao;
   Ni <string> linguagemNi(entradaPrograma, pilhaExecucao);
   linguagemNi.preencherEntradaPrograma();
-  linguagemNi.interpretarEntrada();
+  linguagemNi.empilharMain();
   linguagemNi.imprimirResultado();
   return 0;
 }
