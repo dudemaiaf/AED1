@@ -60,6 +60,16 @@ public:
   bool vazia();
 };
 
+/*
+Classe Ni contém métodos para a interpretação da entrada dada pelo usuário.
+A idéia principal é ter uma lista estática que conterá todos as linhas de execução,
+e uma pilha que conterá o fluxo de execução do programa (main/'Z'). Ao encontrar uma
+instrução de 'print', ele concatena com uma string chamada resultado que terá a
+saída final do programa informado, caso identifique uma chamada de função, é buscada a função
+na lista estática e ela é empilhada do fim até o começo, após isso, é realizado tudo novamente até que apilha
+se encontre vazia.
+*/
+
 template <class T>
 class Ni{
 private:
