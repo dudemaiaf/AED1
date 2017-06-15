@@ -159,47 +159,7 @@ void LDE<T>::mostrar() {
   cout << "NULL";
 }
 
-template <class T, class U>
-class TabelaHash {
-private:
-  LE<T> *HashTable;
-  int funcaoHash(U chave) {return chave%TAM;}
-public:
-  TabelaHash() {
-    HashTable = new LE<T>(TAM);
-  }
-  void inserir(U chave);
-  void mostrar();
-};
-
-template <class T, class U>
-void TabelaHash<T,U>::inserir(U chave) {
-  int posicao = funcaoHash(chave);
-  HashTable->getELemento(posicao).inserir(chave);
-}
-
-template <class T, class U>
-void TabelaHash<T,U>::mostrar() {
-  for(int i = 1; i <= TAM; i ++) {
-    HashTable->getELemento(i).mostrar();
-    cout << endl;
-  }
-}
-
 int main() {
-  TabelaHash < LDE<int> , int> teste;
-  teste.inserir(1);
-  teste.inserir(2);
-  teste.inserir(3);
-  teste.inserir(4);
-  teste.inserir(5);
-  teste.mostrar();
-  teste.inserir(7);
-  teste.inserir(8);
-  teste.inserir(9);
-  teste.inserir(10);
-  teste.inserir(11);
-  teste.mostrar();
 
   return 0;
 }
