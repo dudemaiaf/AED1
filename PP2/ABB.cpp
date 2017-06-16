@@ -10,17 +10,17 @@ private:
 public:
   No() {
     dir = NULL;
-    esq = dir;
-    pai = esq;
+    esq = NULL;
+    // pai = NULL;
   }
   void setChave(T chave);
   T getChave();
   void setEsq(No <T> *esq);
   void setDir(No <T> *dir);
-  void setPai(No <T> *pai);
+  // void setPai(No <T> *pai);
   No* getEsq();
   No* getDir();
-  No* getPai();
+  // No* getPai();
 };
 
 template <class T>
@@ -32,12 +32,21 @@ private:
   void insere(T chave, No<T> *p);
 public:
   ABB() {
-    raiz = new No<T>();
+    raiz = NULL;
   }
-  void inserir(T chave) { insere(chave, raiz); }
+  void inserir(T chave) {
+    insere(chave, raiz);
+  }
   void remover(T chave);
-  void buscar(T chave) { busca(chave, raiz); }
-  void percorrer() { percorre(raiz); }
+  void buscar(T chave) {
+    busca(chave, raiz);
+  }
+  void percorrer() {
+    percorre(raiz);
+  }
+  No<T>* getRaiz() {
+    return raiz;
+  }
 };
 
 template <class T>
@@ -45,12 +54,12 @@ void ABB<T>::busca(T chave, No<T> *p) {
   if(p == NULL) {
     cout << "\nNão foi encontrado\n";
   } else {
-    if(chave > p.getChave()) {
-      busca(chave, p.getDir());
-    }if(chave < p.getChave()) {
-      busca(chave, p.getEsq());
+    if(chave > p->getChave()) {
+      busca(chave, p->getDir());
+    }if(chave < p->getChave()) {
+      busca(chave, p->getEsq());
     } else {
-      chave = p.getChave();
+      chave = p->getChave();
     }
   }
 }
@@ -58,9 +67,9 @@ void ABB<T>::busca(T chave, No<T> *p) {
 template <class T>
 void ABB<T>::percorre(No<T> *p) {
   if(p != NULL) {
-    percorre(p.getEsq());
-    cout << p.getChave() << " ";
-    percorre(p.getDir());
+    percorre(p->getEsq());
+    cout << p->getChave() << " ";
+    percorre(p->getDir());
   }
 }
 
@@ -68,22 +77,31 @@ template <class T>
 void ABB<T>::insere(T chave, No<T> *p) {
   if(p == NULL) {
     p = new No<T>();
-    p.setEsq(NULL);
-    p.setDir(NULL);
-    p.setChave(chave);
+    p->setChave(chave);
   } else {
-    if(chave > p.getChave()) {
-      insere(chave, p.getDir());
-    } if(chave < p.getChave()) {
-      insere(chave, p.getEsq());
+    if(chave > p->getChave()) {
+      insere(chave, p->getDir());
+    } if(chave < p->getChave()) {
+      insere(chave, p->getEsq());
     } else {
       cout << "\nItem já existente\n";
     }
   }
 }
 
-int main() {
+/* ---------------------------------------------------------------------- */
 
+int main() {
+  ABB<int> arvore;
+  arvore.inserir(8);
+  // arvore.inserir(3);
+  // arvore.inserir(10);
+  // arvore.inserir(1);
+  // arvore.inserir(6);
+  // arvore.inserir(14);
+  // arvore.inserir(4);
+  // arvore.inserir(7);
+  arvore.buscar(8);
   return 0;
 }
 
@@ -109,11 +127,10 @@ void No<T>::setDir(No <T> *dir) {
   this->dir = dir;
 }
 
-template <class T>
-void No<T>::setPai(No <T> *pai) {
-  this->pai = pai;
-}
-
+// template <class T>
+// void No<T>::setPai(No <T> *pai) {
+//   this->pai = pai;
+// }
 
 template <class T>
 No<T>* No<T>::getEsq() {
@@ -125,7 +142,7 @@ No<T>* No<T>::getDir() {
   return dir;
 }
 
-template <class T>
-No<T>* No<T>::getPai() {
-  return pai;
-}
+// template <class T>
+// No<T>* No<T>::getPai() {
+//   return pai;
+// }
