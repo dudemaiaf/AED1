@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstdlib>
-#define TAM 3
+#include <cstdio>
+
+#define TAM 787
 
 using namespace std;
 
@@ -52,35 +54,36 @@ public:
   }
   void inserir(T chave);
   void mostrar();
+  int verificarRepeticao(T chave);
 };
 
 template <class T>
-void TabelaHash<T>::inserir(T chave) {
+int TabelaHash<T>::verificarRepeticao(T chave) {
   int posicaoCalculada = calculoHash(chave);
-  listaEncadeada[posicaoCalculada].inserir(chave);
-}
-
-template <class T>
-void TabelaHash<T>::mostrar() {
-  for(int i = 0; i < TAM; i ++) {
-    cout << "[" << (i+1) << "] ";
-    listaEncadeada[i].mostrar();
+  No<T> *validar = listaEncadeada[posicaoCalculada].buscar(chave);
+  if(validar == NULL) {
+    return 0;
+  } else {
+    return 1;
   }
 }
 
 int main() {
   TabelaHash<int> hashTable(TAM);
-  hashTable.inserir(0);
-  hashTable.inserir(3);
-  hashTable.inserir(6);
-  hashTable.inserir(4);
-  hashTable.inserir(7);
-  hashTable.inserir(10);
-  hashTable.inserir(5);
-  hashTable.inserir(8);
-  hashTable.inserir(11);
-  hashTable.inserir(14);
-  hashTable.inserir(17);
+  FILE *arquivo;
+  arquivo = fopen("chaves.txt", "rt");
+  char linha[100], *result;
+  int i = 1;
+  while(!feof(arquivo)) {
+    int numero;
+    result = fgets(linha, 100, arquivo);
+    if(result) {
+      numero = atoi(linha);
+      hashTable.inserir(numero);
+    }
+    i++;
+  }
+  fclose(arquivo);
   hashTable.mostrar();
   return 0;
 }
@@ -155,4 +158,21 @@ void LDE<T>::mostrar() {
     p = p->getProx();
   }
   cout << endl;
+}
+
+
+template <class T>
+void TabelaHash<T>::inserir(T chave) {
+  int posicaoCalculada = calculoHash(chave);
+  if(verificarRepeticao(chave) == 0) {
+    listaEncadeada[posicaoCalculada].inserir(chave);
+  }
+}
+
+template <class T>
+void TabelaHash<T>::mostrar() {
+  for(int i = 0; i < TAM; i ++) {
+    cout << "[" << (i+1) << "] ";
+    listaEncadeada[i].mostrar();
+  }
 }
