@@ -1,32 +1,8 @@
 #include <iostream>
 #include <cstdlib>
-#define TAM 10
+#define TAM 3
 
 using namespace std;
-
-template <class T>
-class LE{
-private:
-  T *array;
-  int limite;
-  int ultimaPosicao;
-public:
-  LE() {
-    this->limite = TAM;
-    array = new T[this->limite];
-    ultimaPosicao = 0;
-  }
-
-  LE(int limite) {
-    this->limite = limite;
-    array = new T[this->limite];
-    ultimaPosicao = 0;
-  }
-  int getLimite();
-  int getUltimaPosicao();
-  T getELemento(int posicaoEscolhida);
-  void inserir(T Chave);
-};
 
 template <class T>
 class No {
@@ -64,82 +40,49 @@ public:
   void mostrar();
 };
 
-// template <class T>
-// class TabelaHash {
-// private:
-//   LE<T>** tabelaHash;
-//   int calculoHash(int chave) {
-//     return chave % TAM;
-//   }
-// public:
-//   TabelaHash() {
-//     tabelaHash = new LE<T>*();
-//     for(int i = 0; i < TAM; i ++) {
-//       tabelaHash[i].inserir(new LDE<int>());
-//     }
-//   }
-//   void inserir(int chave);
-//   void mostrar();
-// };
-//
-// template <class T>
-// void TabelaHash<T>::inserir(int chave) {
-//   int posicao = calculoHash(chave);
-//   tabelaHash[posicao]->inserir(chave);
-// }
-//
-// template <class T>
-// void TabelaHash<T>::mostrar() {
-//   for(int i = 0; i < TAM; i ++) {
-//     cout << "[" << (i+1) << "] ";
-//     tabelaHash[i]->mostrar();
-//     cout << endl;
-//   }
-// }
+template <class T>
+class TabelaHash {
+private:
+  LDE<T> *listaEncadeada;
+protected:
+  int calculoHash(T chave) {return chave%TAM;}
+public:
+  TabelaHash(int tamanho) {
+    listaEncadeada = new LDE<T>[tamanho];
+  }
+  void inserir(T chave);
+  void mostrar();
+};
+
+template <class T>
+void TabelaHash<T>::inserir(T chave) {
+  int posicaoCalculada = calculoHash(chave);
+  listaEncadeada[posicaoCalculada].inserir(chave);
+}
+
+template <class T>
+void TabelaHash<T>::mostrar() {
+  for(int i = 0; i < TAM; i ++) {
+    cout << "[" << (i+1) << "] ";
+    listaEncadeada[i].mostrar();
+  }
+}
 
 int main() {
-  LDE<int> *listaEncadeada;
-  listaEncadeada = new LDE<int>[3];
-  listaEncadeada[0].inserir(0);
-  listaEncadeada[0].inserir(1);
-  listaEncadeada[0].inserir(2);
-  listaEncadeada[0].mostrar();
-  listaEncadeada[1].inserir(3);
-  listaEncadeada[1].inserir(4);
-  listaEncadeada[1].inserir(5);
-  listaEncadeada[1].mostrar();
-  listaEncadeada[2].inserir(6);
-  listaEncadeada[2].inserir(7);
-  listaEncadeada[2].inserir(8);
-  listaEncadeada[2].mostrar();
-
-
+  TabelaHash<int> hashTable(TAM);
+  hashTable.inserir(0);
+  hashTable.inserir(3);
+  hashTable.inserir(6);
+  hashTable.inserir(4);
+  hashTable.inserir(7);
+  hashTable.inserir(10);
+  hashTable.inserir(5);
+  hashTable.inserir(8);
+  hashTable.inserir(11);
+  hashTable.inserir(14);
+  hashTable.inserir(17);
+  hashTable.mostrar();
   return 0;
-}
-
-template <class T>
-int LE<T>::getLimite() {
-  return limite;
-}
-
-template <class T>
-int LE<T>::getUltimaPosicao() {
-  return ultimaPosicao;
-}
-
-template <class T>
-T LE<T>::getELemento(int posicaoEscolhida){
-  return array[posicaoEscolhida];
-}
-
-template <class T>
-void LE<T>::inserir(T Chave) {
-  if(ultimaPosicao < limite){
-    array[ultimaPosicao] = Chave;
-    ultimaPosicao ++;
-  }else{
-    cout << "\nLista cheia! \n";
-  }
 }
 
 template <class T>
