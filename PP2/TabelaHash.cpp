@@ -1,5 +1,7 @@
 #include <iostream>
-#define TAM 6
+#include <cstdlib>
+#define TAM 10
+
 using namespace std;
 
 template <class T>
@@ -16,7 +18,7 @@ public:
   }
 
   LE(int limite) {
-    this->limite = limite+1;
+    this->limite = limite;
     array = new T[this->limite];
     ultimaPosicao = 0;
   }
@@ -25,31 +27,6 @@ public:
   T getELemento(int posicaoEscolhida);
   void inserir(T Chave);
 };
-
-template <class T>
-int LE<T>::getLimite() {
-  return limite;
-}
-
-template <class T>
-int LE<T>::getUltimaPosicao() {
-  return ultimaPosicao;
-}
-
-template <class T>
-T LE<T>::getELemento(int posicaoEscolhida){
-  return array[posicaoEscolhida];
-}
-
-template <class T>
-void LE<T>::inserir(T Chave) {
-  if(ultimaPosicao < limite){
-    ultimaPosicao ++;
-    array[ultimaPosicao] = Chave;
-  }else{
-    cout << "\nLista cheia! \n";
-  }
-}
 
 template <class T>
 class No {
@@ -69,6 +46,101 @@ public:
   No* getProx();
   No* getPred();
 };
+
+template <class T>
+class LDE {
+private:
+  No <T> *prim, *ult;
+public:
+  LDE() {
+    prim = new No<T>();
+    prim->setProx(NULL);
+    prim->setPred(NULL);
+    ult = prim;
+  }
+  void inserir(T chave);
+  void remover(No<T>* removido, T &retorno);
+  No<T>* buscar(T chave);
+  void mostrar();
+};
+
+// template <class T>
+// class TabelaHash {
+// private:
+//   LE<T>** tabelaHash;
+//   int calculoHash(int chave) {
+//     return chave % TAM;
+//   }
+// public:
+//   TabelaHash() {
+//     tabelaHash = new LE<T>*();
+//     for(int i = 0; i < TAM; i ++) {
+//       tabelaHash[i].inserir(new LDE<int>());
+//     }
+//   }
+//   void inserir(int chave);
+//   void mostrar();
+// };
+//
+// template <class T>
+// void TabelaHash<T>::inserir(int chave) {
+//   int posicao = calculoHash(chave);
+//   tabelaHash[posicao]->inserir(chave);
+// }
+//
+// template <class T>
+// void TabelaHash<T>::mostrar() {
+//   for(int i = 0; i < TAM; i ++) {
+//     cout << "[" << (i+1) << "] ";
+//     tabelaHash[i]->mostrar();
+//     cout << endl;
+//   }
+// }
+
+int main() {
+  LDE<int> *listaEncadeada;
+  listaEncadeada = new LDE<int>[3];
+  listaEncadeada[0].inserir(0);
+  listaEncadeada[0].inserir(1);
+  listaEncadeada[0].inserir(2);
+  listaEncadeada[0].mostrar();
+  listaEncadeada[1].inserir(3);
+  listaEncadeada[1].inserir(4);
+  listaEncadeada[1].inserir(5);
+  listaEncadeada[1].mostrar();
+  listaEncadeada[2].inserir(6);
+  listaEncadeada[2].inserir(7);
+  listaEncadeada[2].inserir(8);
+  listaEncadeada[2].mostrar();
+
+
+  return 0;
+}
+
+template <class T>
+int LE<T>::getLimite() {
+  return limite;
+}
+
+template <class T>
+int LE<T>::getUltimaPosicao() {
+  return ultimaPosicao;
+}
+
+template <class T>
+T LE<T>::getELemento(int posicaoEscolhida){
+  return array[posicaoEscolhida];
+}
+
+template <class T>
+void LE<T>::inserir(T Chave) {
+  if(ultimaPosicao < limite){
+    array[ultimaPosicao] = Chave;
+    ultimaPosicao ++;
+  }else{
+    cout << "\nLista cheia! \n";
+  }
+}
 
 template <class T>
 void No<T>::setChave(T chave){
@@ -99,23 +171,6 @@ template <class T>
 No<T>* No<T>::getPred() {
   return pred;
 }
-
-template <class T>
-class LDE {
-private:
-  No <T> *prim, *ult;
-public:
-  LDE() {
-    prim = new No<T>();
-    prim->setProx(NULL);
-    prim->setPred(NULL);
-    ult = prim;
-  }
-  void inserir(T chave);
-  void remover(No<T>* removido, T &retorno);
-  No<T>* buscar(T chave);
-  void mostrar();
-};
 
 template <class T>
 void LDE<T>::inserir(T chave) {
@@ -156,10 +211,5 @@ void LDE<T>::mostrar() {
     cout << p->getChave() << " -> ";
     p = p->getProx();
   }
-  cout << "NULL";
-}
-
-int main() {
-
-  return 0;
+  cout << endl;
 }
