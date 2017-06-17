@@ -77,6 +77,8 @@ template <class T>
 void ABB<T>::insere(T chave, No<T> *p) {
   if(p == NULL) {
     p = new No<T>();
+    p->setEsq(NULL);
+    p->setDir(NULL);
     p->setChave(chave);
   } else {
     if(chave > p->getChave()) {
@@ -94,14 +96,10 @@ void ABB<T>::insere(T chave, No<T> *p) {
 int main() {
   ABB<int> arvore;
   arvore.inserir(8);
-  // arvore.inserir(3);
-  // arvore.inserir(10);
-  // arvore.inserir(1);
-  // arvore.inserir(6);
-  // arvore.inserir(14);
-  // arvore.inserir(4);
-  // arvore.inserir(7);
-  arvore.buscar(8);
+  arvore.inserir(5);
+  arvore.inserir(9);
+  arvore.percorrer();
+
   return 0;
 }
 
