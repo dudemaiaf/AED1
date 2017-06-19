@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
@@ -6,21 +7,18 @@ template <class T>
 class No{
 private:
   T chave;
-  No *pai, *dir, *esq;
+  No *dir, *esq;
 public:
   No() {
     dir = NULL;
     esq = NULL;
-    // pai = NULL;
   }
   void setChave(T chave);
   T getChave();
   void setEsq(No <T> *esq);
   void setDir(No <T> *dir);
-  // void setPai(No <T> *pai);
   No* getEsq();
   No* getDir();
-  // No* getPai();
 };
 
 template <class T>
@@ -29,11 +27,10 @@ private:
   No<T> *raiz;
   void busca(T chave, No<T> *p);
   void percorre(No<T> *p);
-  void insere(T chave, No<T> *p);
+  No<T>* insere(T chave, No<T> *p);
+  void cria() {raiz = NULL;}
 public:
-  ABB() {
-    raiz = NULL;
-  }
+  ABB() { cria(); }
   void inserir(T chave) {
     insere(chave, raiz);
   }
@@ -74,12 +71,13 @@ void ABB<T>::percorre(No<T> *p) {
 }
 
 template <class T>
-void ABB<T>::insere(T chave, No<T> *p) {
+No<T>* ABB<T>::insere(T chave, No<T> *p) {
   if(p == NULL) {
     p = new No<T>();
+    p->setChave(chave);
     p->setEsq(NULL);
     p->setDir(NULL);
-    p->setChave(chave);
+    return p;
   } else {
     if(chave > p->getChave()) {
       insere(chave, p->getDir());
@@ -94,11 +92,14 @@ void ABB<T>::insere(T chave, No<T> *p) {
 /* ---------------------------------------------------------------------- */
 
 int main() {
-  ABB<int> arvore;
-  arvore.inserir(8);
-  arvore.inserir(5);
-  arvore.inserir(9);
-  arvore.percorrer();
+  ABB<int> binaryTree;
+  binaryTree.inserir(8);
+  binaryTree.inserir(5);
+  binaryTree.inserir(9);
+  binaryTree.percorrer();
+  if(binaryTree.getRaiz() == NULL) {
+    cout << "\nRaiz nula\n";
+  }
 
   return 0;
 }
@@ -125,11 +126,6 @@ void No<T>::setDir(No <T> *dir) {
   this->dir = dir;
 }
 
-// template <class T>
-// void No<T>::setPai(No <T> *pai) {
-//   this->pai = pai;
-// }
-
 template <class T>
 No<T>* No<T>::getEsq() {
   return esq;
@@ -139,8 +135,3 @@ template <class T>
 No<T>* No<T>::getDir() {
   return dir;
 }
-
-// template <class T>
-// No<T>* No<T>::getPai() {
-//   return pai;
-// }
