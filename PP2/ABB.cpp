@@ -13,6 +13,11 @@ public:
     dir = NULL;
     esq = NULL;
   }
+  No(T chave) {
+    this->chave = chave;
+    dir = NULL;
+    esq = NULL;
+  }
   void setChave(T chave);
   T getChave();
   void setEsq(No <T> *esq);
@@ -27,7 +32,7 @@ private:
   No<T> *raiz;
   void busca(T chave, No<T> *p);
   void percorre(No<T> *p);
-  No<T>* insere(T chave, No<T> *p);
+  void insere(T chave, No<T> *p);
   void cria() {raiz = NULL;}
 public:
   ABB() { cria(); }
@@ -71,13 +76,9 @@ void ABB<T>::percorre(No<T> *p) {
 }
 
 template <class T>
-No<T>* ABB<T>::insere(T chave, No<T> *p) {
+void ABB<T>::insere(T chave, No<T> *p) {
   if(p == NULL) {
-    p = new No<T>();
-    p->setChave(chave);
-    p->setEsq(NULL);
-    p->setDir(NULL);
-    return p;
+    p = new No<T>(chave);
   } else {
     if(chave > p->getChave()) {
       insere(chave, p->getDir());
