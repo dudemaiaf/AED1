@@ -6,6 +6,8 @@
 
 using namespace std;
 
+int* quickSort(int *array, int esq, int dir);
+
 template <class T>
 class No {
 private:
@@ -75,6 +77,57 @@ int TabelaHash<T>::verificarRepeticao(T chave) {
   }
 }
 
+int main() {
+  TabelaHash<int> hashTable(TAM);
+
+  /* ----- PARTE DE PREENCHER TABELA HASH */
+  string linha;
+  ifstream chaves ("chaves.txt");
+  if(chaves.is_open()) {
+    while(getline(chaves,linha)) {
+      int numero;
+      numero = atoi(linha.c_str());
+      hashTable.inserir(numero);
+    }
+    chaves.close();
+  }
+
+  /* ----- PARTE DE CAPTURAR A LINHA INFORMADA E IMPPRIMIR ----- */
+
+  bool flag = false;
+  int numeroEscolhido;
+  cin >> numeroEscolhido;
+  int *linhaHash;
+  linhaHash = new int[hashTable.getLista(numeroEscolhido%TAM).getTamanho()];
+  int *linhaHash2 = new int[hashTable.getLista(numeroEscolhido%TAM).getTamanho()];
+  No<int> *p = hashTable.getLista(numeroEscolhido%TAM).getPrim()->getProx();
+  int i = 0;
+  while(p != NULL) {
+    if(numeroEscolhido == p->getChave()) {
+      flag = true;
+    }
+    linhaHash[i] = p->getChave();
+    i ++;
+    p = p->getProx();
+  }
+  linhaHash2 = linhaHash;
+  quickSort(linhaHash2, 0, hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1);
+  if(flag) {
+    for(int i = 0; i < hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1; i ++) {
+      cout << linhaHash2[i] << " ";
+    }
+  } else {
+    cout << "Chave não encontrada.";
+  }
+
+  delete[] linhaHash;
+  cout << endl;
+
+  return 0;
+}
+
+/* ----- SUB-ROTINA DE ORDENAÇÃO DE VETORES quickSort */
+
 int* quickSort(int *array, int esq, int dir) {
   int i = esq, j = dir;
   int temp;
@@ -101,47 +154,7 @@ int* quickSort(int *array, int esq, int dir) {
   }
 }
 
-int main() {
-  TabelaHash<int> hashTable(TAM);
-
-  /* ----- PARTE DE PREENCHER TABELA HASH */
-  string linha;
-  ifstream chaves ("chaves.txt");
-  if(chaves.is_open()) {
-    while(getline(chaves,linha)) {
-      int numero;
-      numero = atoi(linha.c_str());
-      hashTable.inserir(numero);
-    }
-    chaves.close();
-  }
-
-  /* ----------------------------------- */
-
-  /* ----- PARTE DE CAPTURAR A LINHA INFORMADA E IMPPRIMIR ----- */
-
-  int numeroEscolhido;
-  cin >> numeroEscolhido;
-  int *linhaHash;
-  linhaHash = new int[hashTable.getLista(numeroEscolhido%TAM).getTamanho()];
-  int *linhaHash2 = new int[hashTable.getLista(numeroEscolhido%TAM).getTamanho()];
-  linhaHash2 = linhaHash;
-  No<int> *p = hashTable.getLista(numeroEscolhido%TAM).getPrim()->getProx();
-  int i = 0;
-  while(p != NULL) {
-    linhaHash[i] = p->getChave();
-    i ++;
-    p = p->getProx();
-  }
-  hashTable.getLista(numeroEscolhido%TAM).mostrar();
-  quickSort(linhaHash2, 0, hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1);
-  for(int i = 1; i < hashTable.getLista(numeroEscolhido%TAM).getTamanho(); i ++) {
-    cout << linhaHash2[i] << " ";
-  }
-  /* ------------------------------------------------------------ */
-  delete[] linhaHash;
-  return 0;
-}
+/* MÉTODOS DO NÓ */
 
 template <class T>
 void No<T>::setChave(T chave){
@@ -172,6 +185,8 @@ template <class T>
 No<T>* No<T>::getPred() {
   return pred;
 }
+
+/* ----- MÉTODOS DA LISTA DUPLAMENTE ENCADEADA ----- */
 
 template <class T>
 void LDE<T>::inserir(T chave) {
@@ -225,6 +240,8 @@ int LDE<T>::getTamanho() {
   }
   return tamanho+1;
 }
+
+/* ----- MÉTODOS DA TABELA HASH ----- */
 
 template <class T>
 void TabelaHash<T>::inserir(T chave) {
