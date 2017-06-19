@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int* quickSort(int *array, int esq, int dir);
+void quickSort(int *array, int esq, int dir);
 
 template <class T>
 class No {
@@ -99,7 +99,6 @@ int main() {
   cin >> numeroEscolhido;
   int *linhaHash;
   linhaHash = new int[hashTable.getLista(numeroEscolhido%TAM).getTamanho()];
-  int *linhaHash2 = new int[hashTable.getLista(numeroEscolhido%TAM).getTamanho()];
   No<int> *p = hashTable.getLista(numeroEscolhido%TAM).getPrim()->getProx();
   int i = 0;
   while(p != NULL) {
@@ -110,11 +109,10 @@ int main() {
     i ++;
     p = p->getProx();
   }
-  linhaHash2 = linhaHash;
-  quickSort(linhaHash2, 0, hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1);
   if(flag) {
+    quickSort(linhaHash, 0, hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1);
     for(int i = 0; i < hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1; i ++) {
-      cout << linhaHash2[i] << " ";
+      cout << linhaHash[i] << " ";
     }
   } else {
     cout << "Chave não encontrada.";
@@ -128,7 +126,7 @@ int main() {
 
 /* ----- SUB-ROTINA DE ORDENAÇÃO DE VETORES quickSort */
 
-int* quickSort(int *array, int esq, int dir) {
+void quickSort(int *array, int esq, int dir) {
   int i = esq, j = dir;
   int temp;
   int pivot = array[(esq + dir) / 2];
@@ -214,10 +212,12 @@ template <class T>
 No<T>* LDE<T>::buscar(T chave) {
   No <T> *p = prim->getProx();
   while(p != NULL){
-    if(p->getChave() == chave) {return p;}
+    if(p->getChave() == chave) {
+      break;
+    }
     p = p->getProx();
   }
-  if(p == NULL){return p;}
+  return p;
 }
 
 template <class T>
