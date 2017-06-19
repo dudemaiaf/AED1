@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <cstdio>
+#include <fstream>
 
 #define TAM 787
 
@@ -40,6 +40,10 @@ public:
   void remover(No<T>* removido, T &retorno);
   No<T>* buscar(T chave);
   void mostrar();
+  int getTamanho();
+  No<T>* getPrim() {
+    return prim;
+  }
 };
 
 template <class T>
@@ -55,6 +59,9 @@ public:
   void inserir(T chave);
   void mostrar();
   int verificarRepeticao(T chave);
+  LDE<T> getLista(int posicao) {
+    return listaEncadeada[posicao];
+  }
 };
 
 template <class T>
@@ -68,23 +75,71 @@ int TabelaHash<T>::verificarRepeticao(T chave) {
   }
 }
 
+int* quickSort(int *array, int esq, int dir) {
+  int i = esq, j = dir;
+  int temp;
+  int pivot = array[(esq + dir) / 2];
+  while(i <= j) {
+    while(array[i] < pivot) {
+      i ++;
+    }
+    while(array[j] > pivot) {
+      j --;
+    }
+    if(i <= j) {
+      temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+      i ++;
+      j --;
+    }
+  }
+  if(esq < j) {
+    quickSort(array, esq, j);
+  }if(i < dir) {
+    quickSort(array, i, dir);
+  }
+}
+
 int main() {
   TabelaHash<int> hashTable(TAM);
-  FILE *arquivo;
-  arquivo = fopen("chaves.txt", "rt");
-  char linha[100], *result;
-  int i = 1;
-  while(!feof(arquivo)) {
-    int numero;
-    result = fgets(linha, 100, arquivo);
-    if(result) {
-      numero = atoi(linha);
+
+  /* ----- PARTE DE PREENCHER TABELA HASH */
+  string linha;
+  ifstream chaves ("chaves.txt");
+  if(chaves.is_open()) {
+    while(getline(chaves,linha)) {
+      int numero;
+      numero = atoi(linha.c_str());
       hashTable.inserir(numero);
     }
-    i++;
+    chaves.close();
   }
-  fclose(arquivo);
-  hashTable.mostrar();
+
+  /* ----------------------------------- */
+
+  /* ----- PARTE DE CAPTURAR A LINHA INFORMADA E IMPPRIMIR ----- */
+
+  int numeroEscolhido;
+  cin >> numeroEscolhido;
+  int *linhaHash;
+  linhaHash = new int[hashTable.getLista(numeroEscolhido%TAM).getTamanho()];
+  int *linhaHash2 = new int[hashTable.getLista(numeroEscolhido%TAM).getTamanho()];
+  linhaHash2 = linhaHash;
+  No<int> *p = hashTable.getLista(numeroEscolhido%TAM).getPrim()->getProx();
+  int i = 0;
+  while(p != NULL) {
+    linhaHash[i] = p->getChave();
+    i ++;
+    p = p->getProx();
+  }
+  hashTable.getLista(numeroEscolhido%TAM).mostrar();
+  quickSort(linhaHash2, 0, hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1);
+  for(int i = 1; i < hashTable.getLista(numeroEscolhido%TAM).getTamanho(); i ++) {
+    cout << linhaHash2[i] << " ";
+  }
+  /* ------------------------------------------------------------ */
+  delete[] linhaHash;
   return 0;
 }
 
@@ -160,6 +215,16 @@ void LDE<T>::mostrar() {
   cout << endl;
 }
 
+template <class T>
+int LDE<T>::getTamanho() {
+  No <T> *p = prim->getProx();
+  int tamanho = 0;
+  while(p != NULL) {
+    tamanho ++;
+    p = p->getProx();
+  }
+  return tamanho+1;
+}
 
 template <class T>
 void TabelaHash<T>::inserir(T chave) {

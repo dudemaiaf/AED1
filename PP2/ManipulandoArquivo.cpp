@@ -1,20 +1,20 @@
 #include <iostream>
-#include <cstdio>
+#include <fstream>
 
 using namespace std;
 
 int main() {
-  FILE *arquivo;
-  arquivo = fopen("chaves.txt", "rt");
-  char linha[100], *result;
+  string linha;
+  ifstream myfile ("chaves.txt");
   int i = 1;
-  while(!feof(arquivo)) {
-    result = fgets(linha, 100, arquivo);
-    if(result) {
-      cout << "Linha " << i << "-> " << linha << endl;
+  if(myfile.is_open()) {
+    while(getline(myfile,linha)) {
+      cout << i << " - " << linha << endl;
+      i ++;
     }
-    i++;
+    myfile.close();
+  }else {
+    cout << "\nImpossível abrir arquivo\n";
   }
-  fclose(arquivo);
   return 0;
 }
