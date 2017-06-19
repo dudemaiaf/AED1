@@ -3,10 +3,14 @@
 #include <fstream>
 
 #define TAM 787
+#define base 128
 
 using namespace std;
 
 void quickSort(int *array, int esq, int dir);
+int interpretarString(string num);
+string acrescentarZero(string numero);
+int pow(int baze, int expoente);
 
 template <class T>
 class No {
@@ -53,7 +57,7 @@ class TabelaHash {
 private:
   LDE<T> *listaEncadeada;
 protected:
-  int calculoHash(T chave) {return chave%TAM;}
+  int calculoHash(int chave) {return chave%TAM;}
 public:
   TabelaHash(int tamanho) {
     listaEncadeada = new LDE<T>[tamanho];
@@ -67,48 +71,49 @@ public:
 };
 
 int main() {
-  TabelaHash<int> hashTable(TAM);
+  TabelaHash<string> hashTable(TAM);
 
   /* ----- PARTE DE PREENCHER TABELA HASH */
   string linha;
   ifstream chaves ("chaves.txt");
   if(chaves.is_open()) {
     while(getline(chaves,linha)) {
-      int numero;
-      numero = atoi(linha.c_str());
-      hashTable.inserir(numero);
+      // int numero;
+      // numero = atoi(linha.c_str());
+      hashTable.inserir(linha);
     }
     chaves.close();
   }
+  hashTable.mostrar();
 
   /* ----- PARTE DE CAPTURAR A LINHA INFORMADA E IMPPRIMIR ----- */
 
-  bool flag = false;
-  int numeroEscolhido;
-  cin >> numeroEscolhido;
-  int *linhaHash;
-  linhaHash = new int[hashTable.getLista(numeroEscolhido%TAM).getTamanho()];
-  No<int> *p = hashTable.getLista(numeroEscolhido%TAM).getPrim()->getProx();
-  int i = 0;
-  while(p != NULL) {
-    if(numeroEscolhido == p->getChave()) {
-      flag = true;
-    }
-    linhaHash[i] = p->getChave();
-    i ++;
-    p = p->getProx();
-  }
-  if(flag) {
-    quickSort(linhaHash, 0, hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1);
-    for(int i = 0; i < hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1; i ++) {
-      cout << linhaHash[i] << " ";
-    }
-  } else {
-    cout << "Chave não encontrada.";
-  }
-
-  delete[] linhaHash;
-  cout << endl;
+  // bool flag = false;
+  // int numeroEscolhido;
+  // cin >> numeroEscolhido;
+  // int *linhaHash;
+  // linhaHash = new int[hashTable.getLista(numeroEscolhido%TAM).getTamanho()];
+  // No<int> *p = hashTable.getLista(numeroEscolhido%TAM).getPrim()->getProx();
+  // int i = 0;
+  // while(p != NULL) {
+  //   if(numeroEscolhido == p->getChave()) {
+  //     flag = true;
+  //   }
+  //   linhaHash[i] = p->getChave();
+  //   i ++;
+  //   p = p->getProx();
+  // }
+  // if(flag) {
+  //   quickSort(linhaHash, 0, hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1);
+  //   for(int i = 0; i < hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1; i ++) {
+  //     cout << linhaHash[i] << " ";
+  //   }
+  // } else {
+  //   cout << "Chave não encontrada.";
+  // }
+  //
+  // delete[] linhaHash;
+  // cout << endl;
 
   return 0;
 }
@@ -173,6 +178,16 @@ string acrescentarZero(string numero) {
     }
   }
   return numero;
+}
+
+/* ----- SUB-ROTINA QUE CALCULA A POTENCIA DE UM NUMERO ----- */
+
+int pow(int baze, int expoente) {
+  if(expoente == 0) {
+    return 1;
+  }else {
+    return baze * pow(baze, expoente-1);
+  }
 }
 
 /* ----- MÉTODOS DO NÓ ----- */
@@ -268,7 +283,8 @@ int LDE<T>::getTamanho() {
 
 template <class T>
 void TabelaHash<T>::inserir(T chave) {
-  int posicaoCalculada = calculoHash(chave);
+  int valorConvertido = interpretarString(chave);
+  int posicaoCalculada = calculoHash(valorConvertido);
   if(verificarRepeticao(chave) == 0) {
     listaEncadeada[posicaoCalculada].inserir(chave);
   }
