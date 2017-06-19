@@ -32,12 +32,12 @@ private:
   No<T> *raiz;
   void busca(T chave, No<T> *p);
   void percorre(No<T> *p);
-  void insere(T chave, No<T> *p);
+  void insere(T chave, No<T> **p);
   void cria() {raiz = NULL;}
 public:
   ABB() { cria(); }
   void inserir(T chave) {
-    insere(chave, raiz);
+    insere(chave, &raiz);
   }
   void remover(T chave);
   void buscar(T chave) {
@@ -76,18 +76,19 @@ void ABB<T>::percorre(No<T> *p) {
 }
 
 template <class T>
-void ABB<T>::insere(T chave, No<T> *p) {
-  if(p == NULL) {
-    p = new No<T>(chave);
-  } else {
-    if(chave > p->getChave()) {
-      insere(chave, p->getDir());
-    } if(chave < p->getChave()) {
-      insere(chave, p->getEsq());
-    } else {
-      cout << "\nItem já existente\n";
-    }
+void ABB<T>::insere(T chave, No<T> **p) {
+  if((*p) == NULL) {
+    (*p) = new No<T>(chave);
   }
+  // else {
+  //   if(chave > p->getChave()) {
+  //     insere(chave, p->getDir());
+  //   } if(chave < p->getChave()) {
+  //     insere(chave, p->getEsq());
+  //   } else {
+  //     cout << "\nItem já existente\n";
+  //   }
+  // }
 }
 
 /* ---------------------------------------------------------------------- */
