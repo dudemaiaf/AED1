@@ -66,17 +66,6 @@ public:
   }
 };
 
-template <class T>
-int TabelaHash<T>::verificarRepeticao(T chave) {
-  int posicaoCalculada = calculoHash(chave);
-  No<T> *validar = listaEncadeada[posicaoCalculada].buscar(chave);
-  if(validar == NULL) {
-    return 0;
-  } else {
-    return 1;
-  }
-}
-
 int main() {
   TabelaHash<int> hashTable(TAM);
 
@@ -152,7 +141,41 @@ void quickSort(int *array, int esq, int dir) {
   }
 }
 
-/* MÉTODOS DO NÓ */
+/* ----- SUB-ROTINA QUE PEGA UMA STRING NUMÉRICA E CALCULA SEU EQUIVALENTE EM INTEIRO ----- */
+
+int interpretarString(string num) {
+  int numero = atoi(num.c_str());
+  int dividendo = 1000, jaUsado = 0, valorInterpretado = 0;
+  int vetor[num.size()];
+  for(int i = 0; i < num.size(); i ++) {
+    if(i == 0) {
+      vetor[i] = numero / dividendo;
+    } else {
+      jaUsado = jaUsado + (vetor[i-1]*dividendo*10);
+      vetor[i] = (numero - jaUsado)/dividendo;
+    }
+    dividendo = dividendo / 10;
+  }
+  int j = 0;
+  for(int i = num.size()-1; i >= 0; i --) {
+    valorInterpretado += vetor[j] * pow(base,i);
+    j++;
+  }
+  return valorInterpretado;
+}
+
+/* ----- SUB-ROTINA QUE ACRESCENTE ZEROS EM NÚMEROS 'INCOMPLETOS' ----- */
+
+string acrescentarZero(string numero) {
+  if(numero.size() < 4) {
+    while(numero.size() != 4) {
+      numero = "0" + numero;
+    }
+  }
+  return numero;
+}
+
+/* ----- MÉTODOS DO NÓ ----- */
 
 template <class T>
 void No<T>::setChave(T chave){
@@ -256,5 +279,16 @@ void TabelaHash<T>::mostrar() {
   for(int i = 0; i < TAM; i ++) {
     cout << "[" << (i+1) << "] ";
     listaEncadeada[i].mostrar();
+  }
+}
+
+template <class T>
+int TabelaHash<T>::verificarRepeticao(T chave) {
+  int posicaoCalculada = calculoHash(chave);
+  No<T> *validar = listaEncadeada[posicaoCalculada].buscar(chave);
+  if(validar == NULL) {
+    return 0;
+  } else {
+    return 1;
   }
 }
