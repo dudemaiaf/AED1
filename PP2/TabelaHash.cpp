@@ -78,9 +78,8 @@ int main() {
   ifstream chaves ("chaves.txt");
   if(chaves.is_open()) {
     while(getline(chaves,linha)) {
-      // int numero;
-      // numero = atoi(linha.c_str());
-      hashTable.inserir(linha);
+      string numero = acrescentarZero(linha);
+      hashTable.inserir(numero);
     }
     chaves.close();
   }
@@ -300,7 +299,8 @@ void TabelaHash<T>::mostrar() {
 
 template <class T>
 int TabelaHash<T>::verificarRepeticao(T chave) {
-  int posicaoCalculada = calculoHash(chave);
+  int valorConvertido = interpretarString(chave);
+  int posicaoCalculada = calculoHash(valorConvertido);
   No<T> *validar = listaEncadeada[posicaoCalculada].buscar(chave);
   if(validar == NULL) {
     return 0;
