@@ -35,7 +35,7 @@ private:
   void insere(T chave, No<T> **p);
   void cria() {raiz = NULL;}
 public:
-  ABB() { cria(); }
+  ABB() {{ cria(); }}
   void inserir(T chave) {
     insere(chave, &raiz);
   }
