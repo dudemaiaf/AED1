@@ -83,36 +83,37 @@ int main() {
     }
     chaves.close();
   }
-  hashTable.mostrar();
 
   /* ----- PARTE DE CAPTURAR A LINHA INFORMADA E IMPPRIMIR ----- */
 
-  // bool flag = false;
-  // int numeroEscolhido;
-  // cin >> numeroEscolhido;
-  // int *linhaHash;
-  // linhaHash = new int[hashTable.getLista(numeroEscolhido%TAM).getTamanho()];
-  // No<int> *p = hashTable.getLista(numeroEscolhido%TAM).getPrim()->getProx();
-  // int i = 0;
-  // while(p != NULL) {
-  //   if(numeroEscolhido == p->getChave()) {
-  //     flag = true;
-  //   }
-  //   linhaHash[i] = p->getChave();
-  //   i ++;
-  //   p = p->getProx();
-  // }
-  // if(flag) {
-  //   quickSort(linhaHash, 0, hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1);
-  //   for(int i = 0; i < hashTable.getLista(numeroEscolhido%TAM).getTamanho()-1; i ++) {
-  //     cout << linhaHash[i] << " ";
-  //   }
-  // } else {
-  //   cout << "Chave não encontrada.";
-  // }
-  //
-  // delete[] linhaHash;
-  // cout << endl;
+  bool flag = false;
+  string numeroEscolhido;
+  cin >> numeroEscolhido;
+  numeroEscolhido = acrescentarZero(numeroEscolhido);
+  int chaveNumeroEscolhido = interpretarString(numeroEscolhido);
+  int *linhaHash;
+  linhaHash = new int[hashTable.getLista(chaveNumeroEscolhido%TAM).getTamanho()];
+  No<string> *p = hashTable.getLista(chaveNumeroEscolhido%TAM).getPrim()->getProx();
+  int i = 0;
+  while(p != NULL) {
+    if(numeroEscolhido == p->getChave()) {
+      flag = true;
+    }
+    linhaHash[i] = atoi(p->getChave().c_str());
+    i ++;
+    p = p->getProx();
+  }
+  if(flag) {
+    quickSort(linhaHash, 0, hashTable.getLista(chaveNumeroEscolhido%TAM).getTamanho()-1);
+    for(int i = 0; i < hashTable.getLista(chaveNumeroEscolhido%TAM).getTamanho()-1; i ++) {
+      cout << linhaHash[i] << " ";
+    }
+  } else {
+    cout << "Chave não encontrada.";
+  }
+
+  delete[] linhaHash;
+  cout << endl;
 
   return 0;
 }
