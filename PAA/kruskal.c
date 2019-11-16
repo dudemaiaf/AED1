@@ -27,14 +27,14 @@ int main()
       int tree_weight = 0;
       make_graph_with_kruskal();
       create_tree(tree);
-      printf("Edges in MST:\n");
+      printf("Arestas da MST:\n");
       for(count = 1; count <= vertices - 1; count++)
       {
             printf("%d->", tree[count].x);
             printf("%d\n", tree[count].y);
             tree_weight = tree_weight + tree[count].weight;
       }
-      printf("Total Weight of this Minimum Spanning Tree:\t%d\n", tree_weight);
+      printf("Peso total da Minimum Spanning Tree:\t%d\n", tree_weight);
       return 0;
 }
  
@@ -74,7 +74,7 @@ void create_tree(struct edge tree[])
       }
       if(count < vertices - 1)
       {
-            printf("Graph is Disconnected. Therefore, Spanning Tree is not possible\n");
+            printf("Grafo é desconexo. Por isso, MST não é possivel.\n");
             exit(1);
       }
 }
@@ -130,25 +130,25 @@ int isEmpty()
 void make_graph_with_kruskal()
 {
       int count, weight, maximum_edges, origin_vertex, destination_vertex;
-      printf("Enter Total Number of Vertices:\t");
+      printf("Entre com o numero total de vertices:\t");
       scanf("%d", &vertices);
       maximum_edges = vertices * (vertices - 1)/2;
       for(count = 0; count < maximum_edges; count++)
       {
-            printf("Enter Edge [%d] Co-ordinates [-1 -1] to Quit\n", count + 1);
-            printf("Enter Origin Point:\t"); 
+            printf("Entre com aresta [%d] Co-ordinates [-1 -1] para sair\n", count + 1);
+            printf("Entre com ponto de origem:\t"); 
             scanf("%d", &origin_vertex);
-            printf("Enter Destination Point:\t");
+            printf("Entre com ponto de destino:\t");
             scanf("%d", &destination_vertex);
             if((origin_vertex == -1) && (destination_vertex == -1))
             {
                   break;
             }
-            printf("Enter Weight for this Edge:\n");
+            printf("Entre com o peso dessa aresta:\n");
             scanf("%d", &weight);
             if(origin_vertex >= vertices || destination_vertex >= vertices || origin_vertex < 0 || destination_vertex < 0)
             {
-                  printf("Entered Edge Co - ordinates is Invalid\n");
+                  printf("Co - ordinates da aresta é invalida.\n");
                   count--;
             }
             else
